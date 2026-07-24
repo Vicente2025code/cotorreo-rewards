@@ -76,6 +76,7 @@ async function buscarMiembroPorTelefono(telefono) {
 
 /**
  * Crea un miembro nuevo.
+ * `fecha_registro` se setea explicito (Airtable API no permite crear campos createdTime).
  */
 async function crearMiembro({ telefono, nombre, email, cumpleanos, origen }) {
   const clean = normalizarTelefono(telefono);
@@ -85,6 +86,7 @@ async function crearMiembro({ telefono, nombre, email, cumpleanos, origen }) {
     nombre: (nombre || "").trim(),
     origen_registro: origen || "web",
     activo: true,
+    fecha_registro: new Date().toISOString(),
   };
   if (email) fields.email = email.trim().toLowerCase();
   if (cumpleanos) fields.cumpleanos = cumpleanos;
@@ -135,10 +137,15 @@ async function generarCodigoCanjeUnico() {
 
 /**
  * Registra un evento en EventosLog.
+ * `fecha` se setea explicito (workaround createdTime API restriction).
  */
 async function log(tipo, payload, miembroId) {
   try {
-    const fields = { tipo_evento: tipo, payload_json: JSON.stringify(payload || {}) };
+    const fields = {
+      tipo_evento: tipo,
+      payload_json: JSON.stringify(payload || {}),
+      fecha: new Date().toISOString(),
+    };
     if (miembroId) fields.miembro = [miembroId];
     await at.post("EventosLog", { fields, typecast: true });
   } catch (e) {

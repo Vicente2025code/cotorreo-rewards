@@ -60,6 +60,7 @@ exports.handler = async (event) => {
         sellos_gastados: SELLOS_POR_CANJE,
         estado: "pendiente",
         fecha_expira: fechaExpira,
+        fecha_solicitud: new Date().toISOString(),
       },
       typecast: true,
     });
