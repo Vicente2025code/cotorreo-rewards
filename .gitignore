@@ -28,6 +28,8 @@ build/
 # Cache
 .cache/
 .next/
+__pycache__/
+*.pyc
 
 # Airtable/WATI tokens (por si acaso)
 .airtable_token
