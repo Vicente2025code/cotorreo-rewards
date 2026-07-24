@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Cotorreo Rewards</title>
 
-  <!-- PWA -->
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#6b21a8" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -14,37 +13,23 @@
   <meta name="apple-mobile-web-app-title" content="Rewards" />
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
 
   <style>
     :root {
-      --violet-deep: #3b0764;
-      --violet: #6b21a8;
-      --violet-vivid: #7c3aed;
-      --amber: #f59e0b;
-      --amber-soft: #fde68a;
-      --amber-deep: #b45309;
-      --teal: #0d9488;
-      --teal-soft: #99f6e4;
-      --teal-vivid: #14b8a6;
-      --cream: #faf7f4;
-      --cream-warm: #f4efe8;
-      --sand: #e6dfd5;
-      --stone: #8f8577;
-      --ink: #1e1435;
-      --ink-soft: #5a4d70;
-      --line: #d9d0c1;
+      --violet-deep: #3b0764; --violet: #6b21a8; --violet-vivid: #7c3aed;
+      --amber: #f59e0b; --amber-soft: #fde68a; --amber-deep: #b45309;
+      --teal: #0d9488; --teal-soft: #99f6e4; --teal-vivid: #14b8a6;
+      --cream: #faf7f4; --cream-warm: #f4efe8; --sand: #e6dfd5;
+      --stone: #8f8577; --ink: #1e1435; --ink-soft: #5a4d70; --line: #d9d0c1;
     }
     @media (prefers-color-scheme: dark) {
-      :root {
-        --cream: #14101a; --cream-warm: #1a1524; --sand: #24202e;
-        --stone: #6b6672; --ink: #f4efe8; --ink-soft: #b8b0c4; --line: #2a2536;
-      }
+      :root { --cream:#14101a; --cream-warm:#1a1524; --sand:#24202e; --stone:#6b6672; --ink:#f4efe8; --ink-soft:#b8b0c4; --line:#2a2536; }
     }
     :root[data-theme="light"] { --cream:#faf7f4; --cream-warm:#f4efe8; --sand:#e6dfd5; --stone:#8f8577; --ink:#1e1435; --ink-soft:#5a4d70; --line:#d9d0c1; }
     :root[data-theme="dark"] { --cream:#14101a; --cream-warm:#1a1524; --sand:#24202e; --stone:#6b6672; --ink:#f4efe8; --ink-soft:#b8b0c4; --line:#2a2536; }
 
     * { box-sizing: border-box; }
+    html, body { overflow-x: hidden; }
     body {
       margin: 0; background: var(--cream); color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
@@ -56,12 +41,10 @@
       box-shadow: 0 0 60px rgba(0,0,0,0.05);
       overflow-x: hidden;
     }
-    body { overflow-x: hidden; }
     @media (display-mode: standalone) {
       body { padding-top: env(safe-area-inset-top); }
     }
 
-    /* ============ TOP NAV ============ */
     .top-nav {
       position: sticky; top: 0; z-index: 40;
       padding: 14px 20px 12px;
@@ -79,24 +62,18 @@
     }
     .grupo-mark img { width: 26px; height: 26px; filter: brightness(0) invert(1); }
     .brand-text { line-height: 1; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--stone); }
-    .brand-text b {
-      display: block; font-family: Georgia, serif; font-size: 18px;
-      letter-spacing: -0.01em; color: var(--ink);
-      text-transform: none; font-weight: 400; margin-top: 3px;
-    }
+    .brand-text b { display: block; font-family: Georgia, serif; font-size: 18px; letter-spacing: -0.01em; color: var(--ink); text-transform: none; font-weight: 400; margin-top: 3px; }
     .avatar {
       width: 40px; height: 40px; border-radius: 50%;
       background: var(--teal); color: white;
       display: grid; place-items: center;
-      font-family: Georgia, serif; font-size: 17px;
+      font-family: Georgia, serif; font-size: 17px; cursor: pointer;
       box-shadow: 0 2px 8px -2px rgba(13, 148, 136, 0.4);
     }
 
-    /* ============ HERO ============ */
     .hero {
       position: relative; margin: 16px 20px 0;
-      padding: 24px 22px 26px;
-      border-radius: 20px; overflow: hidden; color: white;
+      padding: 24px 22px 26px; border-radius: 20px; overflow: hidden; color: white;
       background: linear-gradient(135deg, var(--violet-deep) 0%, var(--violet) 60%, var(--violet-vivid) 100%);
       box-shadow: 0 12px 32px -12px rgba(59, 7, 100, 0.5);
     }
@@ -107,51 +84,29 @@
       opacity: 0.12; mix-blend-mode: overlay;
     }
     .hero::after {
-      content: ''; position: absolute;
-      top: -60px; right: -60px;
+      content: ''; position: absolute; top: -60px; right: -60px;
       width: 200px; height: 200px; border-radius: 50%;
-      background: var(--teal-vivid); opacity: 0.15;
-      filter: blur(40px);
+      background: var(--teal-vivid); opacity: 0.15; filter: blur(40px);
     }
     .hero-content { position: relative; z-index: 1; }
     .greeting { font-size: 13px; opacity: 0.85; }
     .greeting b { font-weight: 500; }
     .card-numbers { display: flex; align-items: baseline; gap: 6px; margin-top: 14px; }
-    .big-n {
-      font-family: Georgia, serif; font-size: 68px;
-      line-height: 0.9; letter-spacing: -0.04em;
-    }
+    .big-n { font-family: Georgia, serif; font-size: 68px; line-height: 0.9; letter-spacing: -0.04em; }
     .of-n { font-size: 15px; opacity: 0.75; margin-left: 4px; }
 
-    /* Grid 5x4 de sellos con logo Grupo Cotorreo */
     .sellos-grid {
       display: grid; grid-template-columns: repeat(5, 1fr);
-      gap: 8px 6px; margin-top: 18px;
-      padding: 0 4px;
+      gap: 8px 6px; margin-top: 18px; padding: 0 4px;
     }
     .sello {
-      aspect-ratio: 1;
-      border-radius: 50%;
+      aspect-ratio: 1; border-radius: 50%;
       display: grid; place-items: center;
-      transition: transform 0.15s;
     }
-    .sello.on {
-      background: white;
-      box-shadow: 0 2px 6px -1px rgba(0,0,0,0.2), 0 0 0 2px var(--teal-vivid);
-    }
-    .sello.off {
-      background: transparent;
-      border: 1.5px dashed rgba(255,255,255,0.35);
-    }
-    .sello img {
-      width: 66%; height: 66%;
-      object-fit: contain;
-    }
-    .sello.on img { filter: none; }
-    .sello.off img {
-      filter: brightness(0) invert(1);
-      opacity: 0.25;
-    }
+    .sello.on { background: white; box-shadow: 0 2px 6px -1px rgba(0,0,0,0.2), 0 0 0 2px var(--teal-vivid); }
+    .sello.off { background: transparent; border: 1.5px dashed rgba(255,255,255,0.35); }
+    .sello img { width: 66%; height: 66%; object-fit: contain; }
+    .sello.off img { filter: brightness(0) invert(1); opacity: 0.25; }
 
     .card-meta {
       display: flex; justify-content: space-between; align-items: center;
@@ -160,26 +115,20 @@
     .card-meta .id {
       font-family: "SF Mono", "Cascadia Code", monospace;
       letter-spacing: 0.05em; padding: 3px 8px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 6px; font-size: 11px;
+      background: rgba(255,255,255,0.1); border-radius: 6px; font-size: 11px;
     }
 
-    /* ============ SECCION TITULO ============ */
     .section-title {
       padding: 28px 20px 12px;
       display: flex; justify-content: space-between; align-items: baseline;
     }
-    .section-title h2 {
-      font-family: Georgia, serif; font-weight: 400; margin: 0;
-      font-size: 21px; letter-spacing: -0.01em;
-    }
+    .section-title h2 { font-family: Georgia, serif; font-weight: 400; margin: 0; font-size: 21px; letter-spacing: -0.01em; }
     .section-title .link {
       font-size: 11px; text-transform: uppercase;
       letter-spacing: 0.14em; color: var(--violet);
-      text-decoration: none; font-weight: 600;
+      text-decoration: none; font-weight: 600; cursor: pointer;
     }
 
-    /* ============ NEGOCIOS GRID ============ */
     .negocios {
       padding: 0 20px; display: grid;
       grid-template-columns: repeat(3, 1fr); gap: 10px;
@@ -196,7 +145,6 @@
     }
     .negocio-card img { max-width: 88%; max-height: 88%; object-fit: contain; }
 
-    /* ============ MENU COMPLETO ============ */
     .menu-completo-wrap { padding: 0 20px 8px; }
     .menu-completo-card {
       background: var(--cream-warm);
@@ -228,71 +176,55 @@
       font-size: 11px; font-weight: 600;
       text-transform: uppercase; letter-spacing: 0.1em;
     }
-    .menu-completo-pages {
-      display: flex; gap: 10px; padding: 12px;
-      overflow-x: scroll; scroll-snap-type: x mandatory;
-      scrollbar-width: none; -webkit-overflow-scrolling: touch;
-    }
-    .menu-completo-pages::-webkit-scrollbar { display: none; }
-    .menu-page {
-      flex: 0 0 92% !important;
-      width: 92%;
-      scroll-snap-align: center;
-      aspect-ratio: 1600/1063;
-      background-size: cover; background-position: center;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px -3px rgba(0,0,0,0.15);
-    }
 
-    /* ============ MENU CAROUSEL populares ============ */
-    .menu-scroll-wrap {
-      position: relative;
-    }
-    .menu-scroll {
+    /* Cupones (nueva sección) */
+    .cupones-scroll {
       display: flex; gap: 12px; padding: 4px 20px 12px;
       overflow-x: scroll; scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      scroll-padding-left: 20px;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
-    .menu-scroll::-webkit-scrollbar { display: none; }
-    /* Peek: agregar padding-right para que se vea que hay mas items */
-    .menu-scroll::after {
-      content: ''; flex: 0 0 8px;
-    }
-    .menu-card {
-      flex: 0 0 200px !important;
-      width: 200px;
+    .cupones-scroll::-webkit-scrollbar { display: none; }
+    .cupones-scroll::after { content: ''; flex: 0 0 8px; }
+    .cupon-card {
+      flex: 0 0 240px !important;
+      width: 240px;
       scroll-snap-align: start;
       background: var(--cream-warm); border-radius: 16px;
       overflow: hidden; border: 1px solid var(--line);
       box-shadow: 0 4px 14px -4px rgba(30,20,53,0.12);
-      transition: all 0.2s; cursor: pointer;
+      cursor: pointer; transition: all 0.2s;
+      position: relative;
     }
-    .menu-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px -8px rgba(30,20,53,0.2); }
-    .menu-card .img { aspect-ratio: 4/3; background-size: cover; background-position: center; }
-    .menu-card .body { padding: 12px 14px; }
-    .menu-card h3 { font-family: Georgia, serif; font-weight: 400; margin: 0; font-size: 15px; }
-    .menu-card .meta { display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px; font-size: 11px; color: var(--ink-soft); }
-    .menu-card .meta .p { color: var(--violet); font-family: Georgia, serif; font-size: 15px; font-weight: 500; }
-    .menu-card .tag {
-      display: inline-block; margin-top: 4px;
-      padding: 2px 8px; background: var(--teal-soft); color: var(--teal);
+    .cupon-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px -8px rgba(30,20,53,0.2); }
+    .cupon-card .img {
+      aspect-ratio: 5/3; background-size: cover; background-position: center;
+      position: relative;
+    }
+    .cupon-card .tag-exclusivo {
+      position: absolute; top: 10px; left: 10px;
+      background: var(--violet); color: white;
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em;
+      font-weight: 700; padding: 4px 10px; border-radius: 999px;
+      box-shadow: 0 2px 6px -1px rgba(59,7,100,0.4);
+    }
+    .cupon-card .body { padding: 14px; }
+    .cupon-card h3 { font-family: Georgia, serif; font-weight: 400; margin: 0; font-size: 16px; }
+    .cupon-card .desc { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.4; }
+    .cupon-card .tag {
+      display: inline-block; margin-top: 8px;
+      padding: 3px 10px; background: var(--amber-soft); color: var(--amber-deep);
       font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
-      font-weight: 600; border-radius: 999px;
+      font-weight: 700; border-radius: 999px;
     }
 
-    /* ============ CANJE ============ */
+    /* Canje card */
     .canje-card {
       margin: 4px 20px 20px; padding: 22px;
       background: radial-gradient(circle at top right, rgba(180, 83, 9, 0.12), transparent 60%), linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%);
       border-radius: 20px; position: relative; overflow: hidden;
       box-shadow: 0 8px 28px -8px rgba(245, 158, 11, 0.45);
     }
-    .canje-card::before {
-      content: '🎁'; position: absolute; top: -30px; right: -20px;
-      font-size: 130px; opacity: 0.15; transform: rotate(-15deg);
-    }
+    .canje-card::before { content: '🎁'; position: absolute; top: -30px; right: -20px; font-size: 130px; opacity: 0.15; transform: rotate(-15deg); }
     .canje-card .content { position: relative; z-index: 1; }
     .canje-card .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: #78350f; font-weight: 700; }
     .canje-card .amt { font-family: Georgia, serif; font-size: 40px; letter-spacing: -0.03em; color: #451a03; line-height: 1; margin-top: 8px; }
@@ -312,29 +244,22 @@
     .canje-card.locked .amt { color: var(--stone); }
     .canje-card.locked .lbl { color: var(--stone); }
     .canje-card.locked p { color: var(--ink-soft); }
-    .canje-card.locked button { background: var(--stone); cursor: not-allowed; }
+    .canje-card.locked button { display: none; }
 
-    /* ============ ACTIVITY ============ */
     .activity { padding: 0 20px 12px; }
     .activity-item {
       display: flex; align-items: center; gap: 12px;
       padding: 14px 0; border-bottom: 1px solid var(--line);
     }
     .activity-item:last-child { border-bottom: none; }
-    .activity-item .ico {
-      width: 42px; height: 42px; border-radius: 12px;
-      display: grid; place-items: center; font-size: 20px;
-      background: var(--sand);
-    }
+    .activity-item .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; background: var(--sand); }
     .activity-item .body { flex: 1; min-width: 0; }
     .activity-item .body h4 { margin: 0; font-size: 14px; font-weight: 500; }
     .activity-item .body .sub { font-size: 12px; color: var(--stone); margin-top: 2px; }
     .activity-item .amt { font-family: Georgia, serif; color: var(--teal); font-weight: 600; font-size: 16px; }
-    .empty-state {
-      padding: 24px; text-align: center; color: var(--stone); font-size: 13px;
-    }
+    .empty-state { padding: 24px; text-align: center; color: var(--stone); font-size: 13px; }
 
-    /* ============ BOTTOM NAV ============ */
+    /* Bottom nav */
     .bottom-nav {
       position: sticky; bottom: 0; background: var(--cream);
       border-top: 1px solid var(--line);
@@ -346,6 +271,7 @@
       display: grid; place-items: center; gap: 2px; padding: 8px 0;
       cursor: pointer; color: var(--stone);
       font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+      background: none; border: none; font-family: inherit;
     }
     .nav-item.active { color: var(--violet); }
     .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
@@ -364,8 +290,7 @@
       border: 1.5px solid var(--line); border-radius: 12px;
       background: var(--cream); color: var(--ink);
       font-size: 16px; font-family: inherit;
-      margin-bottom: 12px;
-      transition: border-color 0.15s;
+      margin-bottom: 12px; transition: border-color 0.15s;
     }
     .center-card input:focus { outline: none; border-color: var(--violet); }
     .center-card label { font-size: 11px; color: var(--stone); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; display: block; margin-bottom: 4px; }
@@ -376,32 +301,220 @@
       font-size: 15px; font-weight: 600; letter-spacing: 0.02em;
       cursor: pointer; font-family: inherit;
       box-shadow: 0 4px 14px -2px rgba(107, 33, 168, 0.4);
-      transition: transform 0.15s;
     }
-    .center-card button:hover { transform: translateY(-1px); }
     .center-card .hint { text-align: center; color: var(--stone); font-size: 12px; margin-top: 16px; }
 
-    /* Loading */
-    .loading {
-      display: grid; place-items: center;
-      padding: 80px 20px; gap: 16px;
-    }
-    .spinner {
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 3px solid var(--sand); border-top-color: var(--violet);
-      animation: spin 0.7s linear infinite;
-    }
+    .loading { display: grid; place-items: center; padding: 80px 20px; gap: 16px; }
+    .spinner { width: 32px; height: 32px; border-radius: 50%; border: 3px solid var(--sand); border-top-color: var(--violet); animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ============ MODALES ============ */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(15, 5, 30, 0.7);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: none;
+      align-items: flex-end; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .modal-overlay.active { display: flex; opacity: 1; }
+    @media (min-width: 481px) { .modal-overlay { align-items: center; } }
+
+    .modal-panel {
+      background: var(--cream); color: var(--ink);
+      width: 100%; max-width: 480px; max-height: 90vh;
+      border-radius: 24px 24px 0 0;
+      overflow-y: auto; overflow-x: hidden;
+      display: flex; flex-direction: column;
+      transform: translateY(100%); transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+    .modal-overlay.active .modal-panel { transform: translateY(0); }
+    @media (min-width: 481px) {
+      .modal-panel { border-radius: 20px; max-height: 85vh; }
+    }
+    .modal-header {
+      padding: 18px 20px 14px; display: flex;
+      align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; background: var(--cream); z-index: 10;
+    }
+    .modal-header h3 {
+      font-family: Georgia, serif; font-weight: 400;
+      font-size: 20px; margin: 0; letter-spacing: -0.01em;
+    }
+    .modal-close {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--sand); border: none;
+      display: grid; place-items: center; cursor: pointer;
+      font-size: 20px; color: var(--ink-soft);
+    }
+    .modal-body { padding: 20px; }
+
+    /* Modal negocio (promos) */
+    .promo-hero { aspect-ratio: 16/9; background-size: cover; background-position: center; border-radius: 14px; margin-bottom: 18px; }
+    .promo-list { list-style: none; padding: 0; margin: 0; }
+    .promo-item {
+      padding: 14px 0; border-bottom: 1px solid var(--line);
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .promo-item:last-child { border-bottom: none; }
+    .promo-item .dot {
+      flex: 0 0 8px; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--teal); margin-top: 8px;
+    }
+    .promo-item h4 { margin: 0 0 4px; font-size: 15px; font-weight: 500; }
+    .promo-item p { margin: 0; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+    .empty-promos {
+      padding: 30px 20px; text-align: center;
+      background: var(--cream-warm); border-radius: 12px;
+      color: var(--stone); font-size: 13px;
+    }
+
+    /* Modal cuenta */
+    .cuenta-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--violet) 100%);
+      color: white; display: grid; place-items: center;
+      font-family: Georgia, serif; font-size: 30px;
+      margin: 0 auto 12px;
+      box-shadow: 0 6px 20px -4px rgba(107, 33, 168, 0.4);
+    }
+    .cuenta-nombre { text-align: center; font-family: Georgia, serif; font-size: 22px; letter-spacing: -0.01em; margin: 0; }
+    .cuenta-tel { text-align: center; color: var(--stone); font-size: 13px; margin: 4px 0 20px; }
+    .cuenta-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin: 0 0 24px;
+    }
+    .stat-block {
+      background: var(--cream-warm); border: 1px solid var(--line);
+      border-radius: 12px; padding: 14px 10px; text-align: center;
+    }
+    .stat-block .n { font-family: Georgia, serif; font-size: 24px; color: var(--violet); font-weight: 500; }
+    .stat-block .l { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--stone); margin-top: 2px; }
+    .cuenta-actions button {
+      width: 100%; padding: 14px;
+      background: var(--cream-warm); color: var(--ink);
+      border: 1px solid var(--line); border-radius: 12px;
+      font-size: 14px; font-weight: 500;
+      cursor: pointer; font-family: inherit;
+      margin-bottom: 8px;
+      text-align: left; padding-left: 18px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .cuenta-actions button.danger { color: #dc2626; }
+
+    /* Modal canje code */
+    .codigo-canje-box {
+      background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%);
+      border-radius: 20px; padding: 30px 20px;
+      text-align: center; margin-bottom: 20px;
+    }
+    .codigo-canje-box .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: #78350f; font-weight: 700; }
+    .codigo-canje-box .codigo {
+      font-family: "SF Mono", "Cascadia Code", monospace;
+      font-size: 52px; letter-spacing: 0.1em; color: #451a03;
+      font-weight: 700; margin: 12px 0 8px; line-height: 1;
+    }
+    .codigo-canje-box .valor { font-family: Georgia, serif; font-size: 22px; color: #78350f; }
+    .codigo-canje-box .expira { font-size: 12px; color: #92400e; margin-top: 10px; }
   </style>
 </head>
 <body>
   <div id="app"></div>
 
+  <!-- MODAL OVERLAY (compartido) -->
+  <div id="modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal-panel" id="modal-panel"></div>
+  </div>
+
   <script>
     const app = document.getElementById('app');
+    const modal = document.getElementById('modal');
+    const modalPanel = document.getElementById('modal-panel');
     let miembro = null;
 
-    // === API ===
+    // ========== PROMOS POR NEGOCIO (placeholder — reemplazables) ==========
+    const NEGOCIOS = {
+      plaza: {
+        nombre: "Plaza Cotorreo",
+        img: "/assets/hero-local.jpg",
+        promos: [
+          { titulo: "Lunes 2x1 Tacos al Pastor", desc: "Compra 4 y llevate 8. Todos los lunes en la sede Plaza." },
+          { titulo: "Martes 2x1 Sushi", desc: "Un rollo, llevate 2. Ideal para compartir con alguien." },
+          { titulo: "Miércoles 2x1 Quesabirrias", desc: "Compra 5 y llevate 10. La birria más famosa de la casa." },
+          { titulo: "Jueves 3x2 Hamburguesas", desc: "Compra 2 y llevate 3. Válido en toda la línea de burgers." },
+          { titulo: "Almuerzo Ejecutivo L-V", desc: "₡3.800 · de 11:30am a 2:00pm." },
+        ]
+      },
+      taqueria: {
+        nombre: "Cotorreo Taquería",
+        img: "/assets/plato-2.jpg",
+        promos: [
+          { titulo: "Miércoles 2x1 Quesabirrias", desc: "5 quesabirrias por el precio de 10. Con consomé al lado." },
+          { titulo: "Almuerzo Ejecutivo", desc: "L-V de 11:30 a 2pm · ₡3.800" },
+          { titulo: "Combo Mundialista Argentina", desc: "Parrillada para 2 + 2 cervezas · ₡14.000" },
+        ]
+      },
+      alpadel: {
+        nombre: "Alpadel",
+        img: "/assets/alpadel.jpg",
+        promos: [
+          { titulo: "Glow Pádel Viernes", desc: "₡5.000 por persona · 1.5h juego + bebida + pala. Requiere reserva." },
+          { titulo: "Domingo Familiar/Amigos", desc: "₡6.000 todo el día sin importar la hora." },
+          { titulo: "Desayuno + Pádel", desc: "1h cancha dobles + 4 desayunos + palas · ₡20.000" },
+          { titulo: "Baldazo Nacional Viernes", desc: "6 cervezas Nacional · ₡6.000" },
+          { titulo: "Miembros ASTEC 20% off", desc: "Presentando membresía activa." },
+        ]
+      },
+      bebros: {
+        nombre: "Bebros",
+        img: "/assets/promo-bebros.jpg",
+        promos: [
+          { titulo: "Fichas 2x1 los miércoles", desc: "Compra 20 fichas y llevate 40. Todo el día." },
+          { titulo: "Combo Cumpleaños", desc: "Paquete completo con fichas + comida + torta. Pedí info por WhatsApp." },
+          { titulo: "Padelband gratis", desc: "Sujeto a disponibilidad." },
+        ]
+      },
+      nube: {
+        nombre: "Nube Suites Motel",
+        img: "/assets/promo-nube.jpg",
+        promos: [
+          { titulo: "Escapada Romántica", desc: "Habitación premium + botella + desayuno. Reservá con anticipación." },
+          { titulo: "Descuento entre semana", desc: "Lunes a jueves con precios especiales." },
+        ]
+      },
+    };
+
+    // ========== CUPONES DEL MES (placeholder — Mariela actualiza mensual) ==========
+    const CUPONES_MES = [
+      {
+        titulo: "2x1 Quesabirrias",
+        desc: "Solo miembros Rewards · Miércoles todo el día en Taquería",
+        img: "/assets/plato-2.jpg",
+        tag: "Solo miembros"
+      },
+      {
+        titulo: "-15% Cancha Alpadel",
+        desc: "Reservando por la app antes del jueves",
+        img: "/assets/alpadel.jpg",
+        tag: "Julio"
+      },
+      {
+        titulo: "Bubble Tea + Postre ₡4.500",
+        desc: "Ahorrás ₡1.500 · Plaza Cotorreo",
+        img: "/assets/bebida.jpg",
+        tag: "Nuevo"
+      },
+      {
+        titulo: "Combo Pits ₡7.900",
+        desc: "Burger + papas + bebida (regular ₡9.500)",
+        img: "/assets/cupon-hamburguesa.jpg",
+        tag: "Ahorro ₡1.600"
+      },
+    ];
+
+    // ========== API ==========
     async function api(path, opts) {
       const r = await fetch(path, opts);
       const data = await r.json();
@@ -409,32 +522,20 @@
       return data;
     }
 
-    // === Router ===
+    // ========== ROUTER ==========
     async function init() {
       const params = new URLSearchParams(location.search);
       const tel = params.get('t');
       if (tel) {
         try {
           const data = await api(`/api/get-mis-sellos?telefono=${encodeURIComponent(tel)}`);
-          if (data.ok) {
-            miembro = data;
-            renderDashboard();
-            return;
-          }
+          if (data.ok) { miembro = data; renderDashboard(); return; }
         } catch (e) {
-          if (String(e.message).includes("no encontrado")) {
-            renderRegistro(tel);
-            return;
-          }
-          renderError(e.message);
-          return;
+          if (String(e.message).includes("no encontrado")) { renderRegistro(tel); return; }
+          renderError(e.message); return;
         }
       }
       renderLogin();
-    }
-
-    function renderLoading() {
-      app.innerHTML = `<div class="loading"><div class="spinner"></div><div style="color:var(--stone);font-size:13px">Cargando…</div></div>`;
     }
 
     function renderLogin() {
@@ -444,14 +545,13 @@
           <p>Ingresá tu teléfono WhatsApp para ver tus sellos.</p>
           <form onsubmit="handleLogin(event)">
             <label>Teléfono</label>
-            <input id="tel" type="tel" required placeholder="8 dígitos (ej: 8888-8888)" autocomplete="tel" />
+            <input id="tel" type="tel" required placeholder="8 dígitos" autocomplete="tel" />
             <button type="submit">Continuar</button>
           </form>
           <div class="hint">Si no estás inscrito, te ayudamos a hacerlo en 30 segundos.</div>
         </div>
       `;
     }
-
     async function handleLogin(e) {
       e.preventDefault();
       const tel = document.getElementById('tel').value.replace(/\D/g, '');
@@ -476,7 +576,6 @@
         </div>
       `;
     }
-
     async function handleRegistro(e, tel) {
       e.preventDefault();
       const nombre = document.getElementById('nombre').value.trim();
@@ -489,9 +588,7 @@
           body: JSON.stringify({ telefono: tel, nombre, email, cumpleanos, origen: 'web' })
         });
         location.href = `?t=${tel}`;
-      } catch (e) {
-        alert("Error: " + e.message);
-      }
+      } catch (e) { alert("Error: " + e.message); }
     }
 
     function renderDashboard() {
@@ -502,32 +599,25 @@
       const inicial = firstName.charAt(0).toUpperCase();
       const idCorto = m.id_corto || 'RW-XXXXX';
 
-      // Grid 5x4 de sellos con logo Cotorreo
       let sellosHTML = '';
       for (let i = 0; i < 20; i++) {
         const on = i < sellos;
         sellosHTML += `<div class="sello ${on ? 'on' : 'off'}"><img src="/assets/logo-grupo-color.svg" alt="" /></div>`;
       }
 
-      // Populares (menú)
-      const platos = [
-        { nombre: "Tacos al Pastor", negocio: "Tacos", precio: "₡4.000", tag: "Lunes 2x1", img: "/assets/plato-1.jpg" },
-        { nombre: "Quesabirrias", negocio: "Taquería", precio: "₡5.000", tag: "Miércoles 2x1", img: "/assets/plato-2.jpg" },
-        { nombre: "Bubble Tea Choco", negocio: "Bebidas", precio: "₡3.500", tag: null, img: "/assets/bebida.jpg" },
-        { nombre: "Cancha de Pádel", negocio: "Alpadel", precio: "₡6.000/h", tag: null, img: "/assets/alpadel.jpg" },
-      ];
-      const platosHTML = platos.map(p => `
-        <div class="menu-card">
-          <div class="img" style="background-image:url(${p.img})"></div>
+      const cuponesHTML = CUPONES_MES.map(c => `
+        <div class="cupon-card" onclick="showCupon('${c.titulo.replace(/'/g, "\\'")}', '${c.desc.replace(/'/g, "\\'")}', '${c.img}')">
+          <div class="img" style="background-image:url(${c.img})">
+            <div class="tag-exclusivo">Exclusivo Rewards</div>
+          </div>
           <div class="body">
-            <h3>${p.nombre}</h3>
-            <div class="meta"><span>${p.negocio}</span><span class="p">${p.precio}</span></div>
-            ${p.tag ? `<div class="tag">${p.tag}</div>` : ''}
+            <h3>${c.titulo}</h3>
+            <div class="desc">${c.desc}</div>
+            <div class="tag">${c.tag}</div>
           </div>
         </div>
       `).join('');
 
-      // Actividad
       const txs = miembro.transacciones || [];
       const iconos = { plaza_cotorreo: '🌮', cotorreo_taqueria: '🍽️', alpadel: '🎾', bebros: '🎮', pits: '🍔', nube: '🏨' };
       const nombres = { plaza_cotorreo: 'Plaza Cotorreo', cotorreo_taqueria: 'Cotorreo Taquería', alpadel: 'Alpadel', bebros: 'Bebros', pits: 'Pits Burger', nube: 'Nube Suites' };
@@ -542,13 +632,12 @@
         </div>
       `).join('') : '<div class="empty-state">Aún no hay compras registradas.<br>Tu próxima compra te suma sellos automáticamente.</div>';
 
-      // Canje card
       const canjeCard = m.canje_disponible
         ? `<div class="canje-card">
              <div class="content">
                <span class="lbl">Canje disponible</span>
                <div class="amt">₡15.000</div>
-               <p>Tenés 20 sellos completos. Pedí tu código y mostralo al cajero en cualquier negocio del grupo.</p>
+               <p>Tenés 20 sellos completos. Pedí tu código y mostralo al cajero en cualquier negocio.</p>
                <button onclick="pedirCanje()">🎁 Canjear ahora</button>
              </div>
            </div>`
@@ -567,7 +656,7 @@
               <div class="grupo-mark"><img src="/assets/logo-grupo-blanco.svg" alt="Grupo Cotorreo" /></div>
               <div class="brand-text">Grupo Cotorreo<b>Rewards</b></div>
             </div>
-            <div class="avatar" title="${m.nombre}">${inicial}</div>
+            <div class="avatar" onclick="openCuenta()" title="Mi cuenta">${inicial}</div>
           </div>
 
           <div class="hero">
@@ -582,36 +671,32 @@
             </div>
           </div>
 
-          <div class="section-title"><h2>Nuestros negocios</h2></div>
+          <div class="section-title"><h2>Promociones de nuestros negocios</h2></div>
           <div class="negocios">
-            <div class="negocio-card"><img src="/assets/logo-plaza.svg" alt="Plaza"/></div>
-            <div class="negocio-card"><img src="/assets/logo-taqueria.svg" alt="Taquería"/></div>
-            <div class="negocio-card"><img src="/assets/logo-alpadel.svg" alt="Alpadel"/></div>
-            <div class="negocio-card"><img src="/assets/logo-bebros.svg" alt="Bebros"/></div>
-            <div class="negocio-card"><img src="/assets/logo-nube.svg" alt="Nube"/></div>
+            <div class="negocio-card" onclick="openNegocio('plaza')"><img src="/assets/logo-plaza.svg" alt="Plaza"/></div>
+            <div class="negocio-card" onclick="openNegocio('taqueria')"><img src="/assets/logo-taqueria.svg" alt="Taquería"/></div>
+            <div class="negocio-card" onclick="openNegocio('alpadel')"><img src="/assets/logo-alpadel.svg" alt="Alpadel"/></div>
+            <div class="negocio-card" onclick="openNegocio('bebros')"><img src="/assets/logo-bebros.svg" alt="Bebros"/></div>
+            <div class="negocio-card" onclick="openNegocio('nube')"><img src="/assets/logo-nube.svg" alt="Nube"/></div>
           </div>
 
-          <div class="section-title"><h2>Menú completo</h2></div>
+          <div class="section-title"><h2>Menú completo</h2><a class="link" onclick="abrirMenuPDF()">Ver PDF</a></div>
           <div class="menu-completo-wrap">
-            <div class="menu-completo-card">
+            <div class="menu-completo-card" onclick="abrirMenuPDF()">
               <div class="menu-completo-hero">
                 <div class="menu-completo-info">
                   <div>
                     <h3>Menú Grupo Cotorreo</h3>
-                    <div class="sub">2 páginas · 80+ platos</div>
+                    <div class="sub">Toca para abrir el PDF</div>
                   </div>
                   <div class="btn">Ver todo</div>
                 </div>
               </div>
-              <div class="menu-completo-pages">
-                <div class="menu-page" style="background-image:url(/assets/menu-p1.jpg)"></div>
-                <div class="menu-page" style="background-image:url(/assets/menu-p2.jpg)"></div>
-              </div>
             </div>
           </div>
 
-          <div class="section-title"><h2>Populares esta semana</h2></div>
-          <div class="menu-scroll">${platosHTML}</div>
+          <div class="section-title"><h2>Cupones exclusivos</h2><span class="link" style="color:var(--stone);cursor:default">Julio 2026</span></div>
+          <div class="cupones-scroll">${cuponesHTML}</div>
 
           <div class="section-title"><h2>Tu progreso</h2></div>
           ${canjeCard}
@@ -620,40 +705,185 @@
           <div class="activity">${activityHTML}</div>
 
           <div class="bottom-nav">
-            <div class="nav-item active">
+            <button class="nav-item active" onclick="window.scrollTo({top:0,behavior:'smooth'})">
               <svg viewBox="0 0 24 24"><path d="M12 2L2 9v13h6v-7h8v7h6V9L12 2z"/></svg>
               Inicio
-            </div>
-            <div class="nav-item">
-              <svg viewBox="0 0 24 24"><path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.20-1.10-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>
+            </button>
+            <button class="nav-item" onclick="abrirMenuPDF()">
+              <svg viewBox="0 0 24 24"><path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>
               Menú
-            </div>
-            <div class="nav-item">
+            </button>
+            <button class="nav-item" onclick="abrirCanje()">
               <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z"/></svg>
               Canjear
-            </div>
-            <div class="nav-item">
+            </button>
+            <button class="nav-item" onclick="openCuenta()">
               <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
               Cuenta
-            </div>
+            </button>
           </div>
         </div>
       `;
     }
 
-    async function pedirCanje() {
-      if (!confirm("¿Canjear 20 sellos por ₡15.000 de crédito?")) return;
+    // ========== MODALES ==========
+    function openModal(html) {
+      modalPanel.innerHTML = html;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function abrirMenuPDF() {
+      // Abre el PDF en nueva pestaña (mejor UX en mobile que iframe)
+      window.open('/assets/menu-cotorreo.pdf', '_blank');
+    }
+
+    function openNegocio(key) {
+      const n = NEGOCIOS[key];
+      if (!n) return;
+      const promosHTML = n.promos.length
+        ? '<ul class="promo-list">' + n.promos.map(p => `
+            <li class="promo-item">
+              <div class="dot"></div>
+              <div>
+                <h4>${p.titulo}</h4>
+                <p>${p.desc}</p>
+              </div>
+            </li>
+          `).join('') + '</ul>'
+        : '<div class="empty-promos">Todavía no hay promos publicadas.<br>Vuelve pronto.</div>';
+
+      openModal(`
+        <div class="modal-header">
+          <h3>${n.nombre}</h3>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="promo-hero" style="background-image:url(${n.img})"></div>
+          ${promosHTML}
+        </div>
+      `);
+    }
+
+    function showCupon(titulo, desc, img) {
+      openModal(`
+        <div class="modal-header">
+          <h3>Cupón exclusivo</h3>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="promo-hero" style="background-image:url(${img})"></div>
+          <h3 style="font-family:Georgia,serif;font-size:22px;margin:0 0 8px;font-weight:400">${titulo}</h3>
+          <p style="color:var(--ink-soft);margin:0 0 16px">${desc}</p>
+          <div style="background:var(--cream-warm);border:1px dashed var(--violet);border-radius:12px;padding:14px;text-align:center">
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.16em;color:var(--stone);font-weight:600;margin-bottom:6px">Cómo canjearlo</div>
+            <div style="font-size:14px;color:var(--ink)">Mostrá esta pantalla al cajero al pagar. Válido solo para miembros Cotorreo Rewards.</div>
+          </div>
+        </div>
+      `);
+    }
+
+    async function abrirCanje() {
+      const m = miembro?.miembro;
+      if (!m) return;
+      if (m.canje_disponible) {
+        openModal(`
+          <div class="modal-header">
+            <h3>Canjear ₡15.000</h3>
+            <button class="modal-close" onclick="closeModal()">×</button>
+          </div>
+          <div class="modal-body">
+            <div style="background:var(--cream-warm);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px">
+              <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.16em;color:var(--stone);font-weight:600">Tenés</div>
+              <div style="font-family:Georgia,serif;font-size:32px;color:var(--violet);margin-top:4px">${m.sellos_actuales} sellos</div>
+              <div style="font-size:13px;color:var(--ink-soft);margin-top:4px">Al canjear se descontarán 20 sellos y quedarás con ${m.sellos_actuales - 20}.</div>
+            </div>
+            <p style="color:var(--ink-soft);font-size:14px;margin:0 0 20px">Al canjear generamos un código único de 6 dígitos. Se lo mostrás al cajero en cualquier negocio del grupo y él te aplica el descuento de ₡15.000 en tu cuenta.</p>
+            <button onclick="ejecutarCanje()" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--amber) 0%,var(--amber-deep) 100%);color:white;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">🎁 Generar mi código</button>
+          </div>
+        `);
+      } else {
+        const restantes = Math.max(0, 20 - m.sellos_actuales);
+        openModal(`
+          <div class="modal-header">
+            <h3>Canje</h3>
+            <button class="modal-close" onclick="closeModal()">×</button>
+          </div>
+          <div class="modal-body">
+            <div style="text-align:center;padding:20px 0">
+              <div style="font-size:60px;margin-bottom:12px">🎁</div>
+              <h3 style="font-family:Georgia,serif;font-size:22px;margin:0 0 8px;font-weight:400">Aún no tenés canje disponible</h3>
+              <p style="color:var(--ink-soft);margin:0">Te faltan <b>${restantes} sellos</b> para desbloquear tu crédito de ₡15.000.<br>Cada ₡10.000 que gastás = 1 sello.</p>
+            </div>
+            <button onclick="closeModal()" style="width:100%;padding:14px;background:var(--sand);color:var(--ink);border:none;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit">Entendido</button>
+          </div>
+        `);
+      }
+    }
+
+    async function ejecutarCanje() {
       try {
         const r = await api('/api/pedir-canje', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ telefono: miembro.miembro.telefono })
         });
-        alert(`¡Listo! Tu código es ${r.codigo_canje}. También te lo enviamos por WhatsApp.`);
-        location.reload();
-      } catch (e) {
-        alert("Error: " + e.message);
-      }
+        openModal(`
+          <div class="modal-header">
+            <h3>Tu código de canje</h3>
+            <button class="modal-close" onclick="closeModal();location.reload()">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="codigo-canje-box">
+              <div class="lbl">Mostrá este código al cajero</div>
+              <div class="codigo">${r.codigo_canje}</div>
+              <div class="valor">Vale ₡${(r.valor||0).toLocaleString('es-CR')}</div>
+              <div class="expira">Válido hasta ${r.fecha_expira}</div>
+            </div>
+            <p style="color:var(--ink-soft);font-size:13px;text-align:center;margin:0 0 18px">
+              También te lo enviamos por WhatsApp. Válido en cualquier negocio del grupo.
+            </p>
+            <button onclick="closeModal();location.reload()" style="width:100%;padding:14px;background:var(--violet);color:white;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Listo</button>
+          </div>
+        `);
+      } catch (e) { alert("Error: " + e.message); }
+    }
+
+    function pedirCanje() { abrirCanje(); }
+
+    function openCuenta() {
+      const m = miembro?.miembro;
+      if (!m) return;
+      const firstName = (m.nombre || 'amigo').split(' ')[0];
+      const inicial = firstName.charAt(0).toUpperCase();
+      const totalTx = (miembro.transacciones || []).length;
+      const totalCanjes = (miembro.canjes || []).length;
+      openModal(`
+        <div class="modal-header">
+          <h3>Mi cuenta</h3>
+          <button class="modal-close" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="cuenta-avatar">${inicial}</div>
+          <h2 class="cuenta-nombre">${m.nombre}</h2>
+          <div class="cuenta-tel">${m.telefono}</div>
+          <div class="cuenta-stats">
+            <div class="stat-block"><div class="n">${m.sellos_historicos || 0}</div><div class="l">Sellos ganados</div></div>
+            <div class="stat-block"><div class="n">${totalCanjes}</div><div class="l">Canjes</div></div>
+            <div class="stat-block"><div class="n">${totalTx}</div><div class="l">Compras</div></div>
+          </div>
+          <div class="cuenta-actions">
+            <button onclick="alert('Contactá al 6303-8030 para editar tus datos')">📝 Editar mis datos</button>
+            <button onclick="abrirMenuPDF()">📖 Ver menú completo</button>
+            <button onclick="window.open('https://wa.me/50663038030','_blank')">💬 Contactar Cotorreo</button>
+            <button class="danger" onclick="if(confirm('¿Cerrar sesión?')){location.href='/'}">↩️ Cerrar sesión</button>
+          </div>
+        </div>
+      `);
     }
 
     function renderError(msg) {
@@ -668,7 +898,6 @@
 
     init();
 
-    // PWA service worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch(() => {});
