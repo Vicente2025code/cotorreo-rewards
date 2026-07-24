@@ -22,9 +22,10 @@ exports.handler = async (event) => {
     if (!miembro) return respond(404, { error: "Miembro no encontrado" });
 
     // Historial ultimas 10 transacciones
+    // ARRAYJOIN({miembro}) devuelve el primary field (telefono) del link, no el id
     const transR = await at.get("Transacciones", {
-      filterByFormula: `FIND('${miembro.id}', ARRAYJOIN({miembro}))`,
-      sort: JSON.stringify([{ field: "fecha_compra", direction: "desc" }]),
+      filterByFormula: `FIND('${telefono}', ARRAYJOIN({miembro}))`,
+      sort: [{ field: "fecha_compra", direction: "desc" }],
       maxRecords: 10,
     });
     const transacciones = (transR?.records || []).map(r => ({
@@ -37,8 +38,8 @@ exports.handler = async (event) => {
 
     // Ultimos 5 canjes
     const canjR = await at.get("Canjes", {
-      filterByFormula: `FIND('${miembro.id}', ARRAYJOIN({miembro}))`,
-      sort: JSON.stringify([{ field: "id_corto", direction: "desc" }]),
+      filterByFormula: `FIND('${telefono}', ARRAYJOIN({miembro}))`,
+      sort: [{ field: "id_corto", direction: "desc" }],
       maxRecords: 5,
     });
     const canjes = (canjR?.records || []).map(r => ({

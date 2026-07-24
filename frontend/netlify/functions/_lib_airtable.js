@@ -35,7 +35,16 @@ const at = {
   get: (table, params) => {
     const qs = new URLSearchParams();
     Object.entries(params || {}).forEach(([k, v]) => {
-      if (v !== undefined && v !== null) qs.append(k, v);
+      if (v === undefined || v === null) return;
+      // El parametro 'sort' se serializa como sort[i][field]/[direction], no JSON.
+      if (k === "sort" && Array.isArray(v)) {
+        v.forEach((s, i) => {
+          if (s.field) qs.append(`sort[${i}][field]`, s.field);
+          if (s.direction) qs.append(`sort[${i}][direction]`, s.direction);
+        });
+        return;
+      }
+      qs.append(k, v);
     });
     return airtableRequest("GET", `${encodeURIComponent(table)}?${qs.toString()}`);
   },
