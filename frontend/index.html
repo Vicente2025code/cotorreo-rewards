@@ -54,7 +54,9 @@
       max-width: 480px; margin: 0 auto; background: var(--cream);
       min-height: 100vh; position: relative;
       box-shadow: 0 0 60px rgba(0,0,0,0.05);
+      overflow-x: hidden;
     }
+    body { overflow-x: hidden; }
     @media (display-mode: standalone) {
       body { padding-top: env(safe-area-inset-top); }
     }
@@ -228,12 +230,14 @@
     }
     .menu-completo-pages {
       display: flex; gap: 10px; padding: 12px;
-      overflow-x: auto; scroll-snap-type: x mandatory;
+      overflow-x: scroll; scroll-snap-type: x mandatory;
       scrollbar-width: none; -webkit-overflow-scrolling: touch;
     }
     .menu-completo-pages::-webkit-scrollbar { display: none; }
     .menu-page {
-      flex: 0 0 92%; scroll-snap-align: center;
+      flex: 0 0 92% !important;
+      width: 92%;
+      scroll-snap-align: center;
       aspect-ratio: 1600/1063;
       background-size: cover; background-position: center;
       border-radius: 10px;
@@ -241,14 +245,25 @@
     }
 
     /* ============ MENU CAROUSEL populares ============ */
+    .menu-scroll-wrap {
+      position: relative;
+    }
     .menu-scroll {
       display: flex; gap: 12px; padding: 4px 20px 12px;
-      overflow-x: auto; scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      overflow-x: scroll; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      scroll-padding-left: 20px;
     }
     .menu-scroll::-webkit-scrollbar { display: none; }
+    /* Peek: agregar padding-right para que se vea que hay mas items */
+    .menu-scroll::after {
+      content: ''; flex: 0 0 8px;
+    }
     .menu-card {
-      flex: 0 0 200px; scroll-snap-align: start;
+      flex: 0 0 200px !important;
+      width: 200px;
+      scroll-snap-align: start;
       background: var(--cream-warm); border-radius: 16px;
       overflow: hidden; border: 1px solid var(--line);
       box-shadow: 0 4px 14px -4px rgba(30,20,53,0.12);
@@ -567,13 +582,12 @@
             </div>
           </div>
 
-          <div class="section-title"><h2>Nuestros negocios</h2><a class="link" href="#">Ver todos</a></div>
+          <div class="section-title"><h2>Nuestros negocios</h2></div>
           <div class="negocios">
             <div class="negocio-card"><img src="/assets/logo-plaza.svg" alt="Plaza"/></div>
             <div class="negocio-card"><img src="/assets/logo-taqueria.svg" alt="Taquería"/></div>
             <div class="negocio-card"><img src="/assets/logo-alpadel.svg" alt="Alpadel"/></div>
             <div class="negocio-card"><img src="/assets/logo-bebros.svg" alt="Bebros"/></div>
-            <div class="negocio-card"><img src="/assets/logo-pits.svg" alt="Pits"/></div>
             <div class="negocio-card"><img src="/assets/logo-nube.svg" alt="Nube"/></div>
           </div>
 
