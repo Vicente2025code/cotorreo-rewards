@@ -2,8 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Cajero — Cotorreo Rewards</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#1e293b" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Cajero Rewards" />
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -11,6 +22,9 @@
     .tab-active { background: #059669; color: white; }
     .tab-inactive { background: #e5e7eb; color: #4b5563; }
     input, select { font-size: 18px; }
+    @media (display-mode: standalone) {
+      body { padding-top: env(safe-area-inset-top); }
+    }
   </style>
 </head>
 <body class="bg-slate-100 min-h-screen">
@@ -18,9 +32,12 @@
   <!-- HEADER -->
   <div class="bg-slate-800 text-white p-4 shadow-lg">
     <div class="max-w-md mx-auto flex items-center justify-between">
-      <div>
-        <div class="text-xs opacity-70">CAJERO</div>
-        <div class="text-lg font-bold">Cotorreo Rewards</div>
+      <div class="flex items-center gap-3">
+        <img src="/assets/logo-horizontal-blanco.svg" alt="Grupo Cotorreo" class="h-8" />
+        <div>
+          <div class="text-xs opacity-70 leading-tight">CAJERO</div>
+          <div class="text-sm font-bold leading-tight">Rewards</div>
+        </div>
       </div>
       <div id="cajero-nombre" class="text-xs opacity-70"></div>
     </div>
