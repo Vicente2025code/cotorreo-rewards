@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cajero — Cotorreo Rewards</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .tab-active { background: #059669; color: white; }
+    .tab-inactive { background: #e5e7eb; color: #4b5563; }
+    input, select { font-size: 18px; }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen">
+
+  <!-- HEADER -->
+  <div class="bg-slate-800 text-white p-4 shadow-lg">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div>
+        <div class="text-xs opacity-70">CAJERO</div>
+        <div class="text-lg font-bold">Cotorreo Rewards</div>
+      </div>
+      <div id="cajero-nombre" class="text-xs opacity-70"></div>
+    </div>
+  </div>
+
+  <div class="max-w-md mx-auto p-4">
+
+    <!-- TABS -->
+    <div class="flex mb-4 rounded-xl overflow-hidden shadow">
+      <button id="tab-sumar" onclick="showTab('sumar')" class="tab-active flex-1 py-3 font-semibold">
+        ➕ Sumar sellos
+      </button>
+      <button id="tab-canje" onclick="showTab('canje')" class="tab-inactive flex-1 py-3 font-semibold">
+        🎫 Validar canje
+      </button>
+    </div>
+
+    <!-- CONFIG BAR -->
+    <div class="bg-white rounded-xl p-3 shadow mb-4 flex items-center gap-2 text-sm">
+      <span class="text-gray-500">Negocio:</span>
+      <select id="negocio" class="flex-1 border rounded p-1 font-semibold" onchange="saveConfig()">
+        <option value="plaza_cotorreo">Plaza Cotorreo</option>
+        <option value="cotorreo_taqueria">Cotorreo Taquería</option>
+        <option value="alpadel">Alpadel</option>
+        <option value="bebros">Bebros</option>
+        <option value="otro_1">Otro 1</option>
+        <option value="otro_2">Otro 2</option>
+      </select>
+      <button onclick="promptCajero()" class="text-xs text-gray-500 underline">Yo:</button>
+    </div>
+
+    <!-- TAB: SUMAR SELLOS -->
+    <div id="tab-content-sumar">
+      <div class="bg-white rounded-2xl shadow-md p-5">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Sumar sellos al cliente</h2>
+
+        <label class="block text-xs font-semibold text-gray-500 mb-1">Teléfono cliente (8 dígitos CR)</label>
+        <div class="flex gap-2 mb-3">
+          <input id="tel-sumar" type="tel" placeholder="8888-8888" class="flex-1 border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-emerald-500" />
+          <button onclick="buscarMiembro()" class="bg-slate-200 hover:bg-slate-300 px-4 rounded-xl font-semibold">Buscar</button>
+        </div>
+
+        <div id="miembro-info" class="mb-4"></div>
+
+        <label class="block text-xs font-semibold text-gray-500 mb-1">Monto de la compra (₡)</label>
+        <input id="monto" type="number" min="1" placeholder="Ej: 25000" class="w-full border-2 border-gray-200 rounded-xl p-3 mb-4 outline-none focus:border-emerald-500 text-2xl font-bold" />
+
+        <div id="preview-sellos" class="text-center text-sm text-gray-500 mb-3"></div>
+
+        <button onclick="sumarSellos()" id="btn-sumar" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl text-lg shadow">
+          ➕ Sumar sellos
+        </button>
+      </div>
+
+      <div id="resultado-sumar" class="mt-4"></div>
+    </div>
+
+    <!-- TAB: VALIDAR CANJE -->
+    <div id="tab-content-canje" class="hidden">
+      <div class="bg-white rounded-2xl shadow-md p-5">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">Validar código de canje</h2>
+
+        <label class="block text-xs font-semibold text-gray-500 mb-1">Código (6 dígitos que muestra el cliente)</label>
+        <input id="codigo" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="123456"
+               class="w-full border-2 border-gray-200 rounded-xl p-4 mb-4 text-center text-3xl font-bold tracking-widest outline-none focus:border-emerald-500" />
+
+        <button onclick="validarCanje()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-yellow-900 font-bold py-4 rounded-xl text-lg shadow">
+          🎫 Validar canje
+        </button>
+
+        <div class="mt-4 text-xs text-gray-500 text-center">
+          Cada canje vale ₡15.000 de crédito a descontar de la cuenta.
+        </div>
+      </div>
+
+      <div id="resultado-canje" class="mt-4"></div>
+    </div>
+  </div>
+
+  <script>
+    // === Config local (localStorage) ===
+    const S = key => localStorage.getItem(key) || '';
+    function saveConfig() {
+      localStorage.setItem('rw_negocio', document.getElementById('negocio').value);
+    }
+    function promptCajero() {
+      const n = prompt("¿Cuál es tu nombre?", S('rw_cajero'));
+      if (n) { localStorage.setItem('rw_cajero', n); document.getElementById('cajero-nombre').textContent = n; }
+    }
+    (function loadConfig() {
+      const neg = S('rw_negocio'); if (neg) document.getElementById('negocio').value = neg;
+      document.getElementById('cajero-nombre').textContent = S('rw_cajero') || 'sin nombre';
+      if (!S('rw_admin_token')) {
+        const t = prompt("Token admin (una sola vez):");
+        if (t) localStorage.setItem('rw_admin_token', t);
+      }
+    })();
+
+    // === Preview sellos dinámico ===
+    document.getElementById('monto').addEventListener('input', function() {
+      const m = Number(this.value) || 0;
+      const s = Math.floor(m / 10000);
+      document.getElementById('preview-sellos').textContent =
+        m > 0 ? `Se sumarán *${s} sello${s !== 1 ? 's' : ''}* (₡${m.toLocaleString('es-CR')})` : '';
+    });
+
+    // === API helper ===
+    async function api(path, opts = {}) {
+      opts.headers = {
+        'Content-Type': 'application/json',
+        'x-admin-token': S('rw_admin_token'),
+        ...(opts.headers || {})
+      };
+      const r = await fetch(path, opts);
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+      return data;
+    }
+
+    // === Tabs ===
+    function showTab(name) {
+      const tabs = ['sumar', 'canje'];
+      tabs.forEach(t => {
+        document.getElementById('tab-content-' + t).classList.toggle('hidden', t !== name);
+        document.getElementById('tab-' + t).className = (t === name)
+          ? 'tab-active flex-1 py-3 font-semibold'
+          : 'tab-inactive flex-1 py-3 font-semibold';
+      });
+    }
+
+    // === Buscar miembro (verificación previa) ===
+    async function buscarMiembro() {
+      const tel = document.getElementById('tel-sumar').value.replace(/\D/g, '');
+      if (tel.length < 8) return alert("Teléfono inválido");
+      const box = document.getElementById('miembro-info');
+      box.innerHTML = '<div class="text-gray-500 text-sm">Buscando...</div>';
+      try {
+        const data = await api(`/api/buscar-miembro?telefono=${tel}`);
+        if (data.existe) {
+          const m = data.miembro;
+          box.innerHTML = `
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+              <div class="text-sm text-emerald-800 font-semibold">✓ ${m.nombre}</div>
+              <div class="text-xs text-emerald-600 mt-1">Sellos actuales: <b>${m.sellos_actuales}</b>${m.canje_disponible ? ' · 🎁 tiene canje disponible' : ''}</div>
+            </div>`;
+        } else {
+          box.innerHTML = `
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-3">
+              <div class="text-sm text-blue-800">💡 Cliente nuevo — se creará automáticamente al sumar sellos</div>
+            </div>`;
+        }
+      } catch (e) { box.innerHTML = `<div class="text-red-600 text-sm">${e.message}</div>`; }
+    }
+
+    // === Sumar sellos ===
+    async function sumarSellos() {
+      const tel = document.getElementById('tel-sumar').value.replace(/\D/g, '');
+      const monto = Number(document.getElementById('monto').value);
+      if (tel.length < 8) return alert("Teléfono inválido");
+      if (!monto || monto <= 0) return alert("Monto inválido");
+      const btn = document.getElementById('btn-sumar');
+      btn.disabled = true; btn.textContent = 'Sumando...';
+      try {
+        const data = await api('/api/sumar-sellos', {
+          method: 'POST',
+          body: JSON.stringify({
+            telefono: tel, monto,
+            negocio: document.getElementById('negocio').value,
+            cajero: S('rw_cajero'),
+          }),
+        });
+        const box = document.getElementById('resultado-sumar');
+        box.innerHTML = `
+          <div class="bg-emerald-600 text-white rounded-2xl p-5 shadow-lg text-center">
+            <div class="text-4xl font-extrabold mb-1">+${data.sellos_ganados} sello${data.sellos_ganados !== 1 ? 's' : ''}</div>
+            <div class="text-sm opacity-90">${data.miembro.nombre}</div>
+            <div class="mt-4 pt-4 border-t border-white/30">
+              <div class="text-xs uppercase opacity-80">Total actual</div>
+              <div class="text-3xl font-bold">${data.sellos_actuales} de 20</div>
+              ${data.era_umbral ? '<div class="mt-2 bg-yellow-400 text-yellow-900 rounded p-2 font-bold">🎉 ¡Cruzó el umbral! Cliente notificado del canje</div>' : ''}
+              ${data.miembro_creado ? '<div class="mt-2 text-xs bg-white/20 rounded p-2">✨ Cliente nuevo registrado</div>' : ''}
+            </div>
+          </div>`;
+        document.getElementById('monto').value = '';
+        document.getElementById('preview-sellos').textContent = '';
+        // Actualizar info del miembro con los nuevos sellos
+        await buscarMiembro();
+      } catch (e) {
+        alert("Error: " + e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = '➕ Sumar sellos';
+      }
+    }
+
+    // === Validar canje ===
+    async function validarCanje() {
+      const codigo = document.getElementById('codigo').value.trim();
+      if (!/^\d{6}$/.test(codigo)) return alert("Código debe ser 6 dígitos");
+      try {
+        const data = await api('/api/validar-canje', {
+          method: 'POST',
+          body: JSON.stringify({
+            codigo,
+            negocio: document.getElementById('negocio').value,
+            cajero: S('rw_cajero'),
+          }),
+        });
+        const box = document.getElementById('resultado-canje');
+        box.innerHTML = `
+          <div class="bg-yellow-400 text-yellow-900 rounded-2xl p-5 shadow-lg text-center">
+            <div class="text-4xl mb-2">🎉</div>
+            <div class="text-xl font-bold">Canje válido</div>
+            <div class="text-3xl font-extrabold my-3">₡${(data.canje.valor || 0).toLocaleString('es-CR')}</div>
+            <div class="text-sm">Aplicá este descuento a la cuenta del cliente</div>
+          </div>`;
+        document.getElementById('codigo').value = '';
+      } catch (e) {
+        const box = document.getElementById('resultado-canje');
+        box.innerHTML = `<div class="bg-red-50 border border-red-300 text-red-800 rounded-xl p-4"><b>${e.message}</b></div>`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cotorreo Rewards</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-bg { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+    .sello { width: 42px; height: 42px; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center; font-weight: 700; margin: 3px; transition: all 0.2s; }
+    .sello.activo { background: #059669; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+    .sello.pendiente { background: #e5e7eb; color: #9ca3af; border: 2px dashed #d1d5db; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- HEADER -->
+  <div class="gradient-bg text-white p-5 shadow-lg">
+    <div class="max-w-md mx-auto">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-xs opacity-90">GRUPO COTORREO</div>
+          <div class="text-2xl font-bold">Rewards</div>
+        </div>
+        <div class="text-3xl">🎯</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" class="max-w-md mx-auto p-4">
+    <div class="text-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+      <div class="text-gray-600">Cargando...</div>
+    </div>
+  </div>
+
+  <script>
+    const app = document.getElementById('app');
+    let miembro = null;
+
+    // === API ===
+    async function api(path, opts) {
+      const r = await fetch(path, opts);
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`);
+      return data;
+    }
+
+    // === Router ===
+    async function init() {
+      // Detectar teléfono en URL: rewards.grupocotorreo.com/?t=50672882394
+      const params = new URLSearchParams(location.search);
+      const tel = params.get('t');
+      if (tel) {
+        try {
+          const data = await api(`/api/get-mis-sellos?telefono=${encodeURIComponent(tel)}`);
+          if (data.ok) {
+            miembro = data;
+            renderDashboard();
+            return;
+          }
+        } catch (e) {
+          if (String(e.message).includes("no encontrado")) {
+            renderRegistro(tel);
+            return;
+          }
+          renderError(e.message);
+          return;
+        }
+      }
+      renderLogin();
+    }
+
+    // === Vistas ===
+    function renderLogin() {
+      app.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-md p-6 mt-4">
+          <h2 class="text-xl font-bold text-gray-800 mb-2">¡Hola! 👋</h2>
+          <p class="text-gray-600 text-sm mb-5">Ingresá tu teléfono WhatsApp para ver tus sellos.</p>
+          <form onsubmit="handleLogin(event)">
+            <input id="tel" type="tel" required placeholder="8 dígitos (ej: 8888-8888)"
+                   class="w-full border-2 border-gray-200 rounded-xl p-3 mb-3 focus:border-emerald-500 outline-none text-lg" />
+            <button class="w-full gradient-bg text-white font-semibold py-3 rounded-xl hover:opacity-90">
+              Continuar
+            </button>
+          </form>
+          <p class="text-xs text-gray-500 mt-4 text-center">Si no estás registrado, te ayudamos a inscribirte en 30 segundos.</p>
+        </div>
+      `;
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const tel = document.getElementById('tel').value.replace(/\D/g, '');
+      if (tel.length < 8) return alert("Teléfono inválido");
+      location.href = `?t=${tel}`;
+    }
+
+    function renderRegistro(tel) {
+      app.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-md p-6 mt-4">
+          <div class="text-4xl mb-3">✨</div>
+          <h2 class="text-xl font-bold text-gray-800 mb-1">¡Sumate a Cotorreo Rewards!</h2>
+          <p class="text-gray-600 text-sm mb-5">Ganás sellos por cada compra. 20 sellos = ₡15.000 de crédito.</p>
+          <form onsubmit="handleRegistro(event, '${tel}')">
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Nombre</label>
+            <input id="nombre" type="text" required minlength="2"
+                   class="w-full border-2 border-gray-200 rounded-xl p-3 mb-3 focus:border-emerald-500 outline-none" />
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Email (opcional, para tarjeta digital)</label>
+            <input id="email" type="email"
+                   class="w-full border-2 border-gray-200 rounded-xl p-3 mb-3 focus:border-emerald-500 outline-none" />
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Cumpleaños (opcional)</label>
+            <input id="cumple" type="date"
+                   class="w-full border-2 border-gray-200 rounded-xl p-3 mb-4 focus:border-emerald-500 outline-none" />
+            <button class="w-full gradient-bg text-white font-semibold py-3 rounded-xl hover:opacity-90">
+              Crear mi cuenta Rewards
+            </button>
+          </form>
+        </div>
+      `;
+    }
+
+    async function handleRegistro(e, tel) {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const cumpleanos = document.getElementById('cumple').value;
+      try {
+        await api('/api/login-or-register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ telefono: tel, nombre, email, cumpleanos, origen: 'web' })
+        });
+        location.href = `?t=${tel}`;
+      } catch (e) {
+        alert("Error: " + e.message);
+      }
+    }
+
+    function renderDashboard() {
+      const m = miembro.miembro;
+      const sellos = Math.min(m.sellos_actuales, 20);
+      const restantes = Math.max(0, 20 - sellos);
+      let sellosHTML = '';
+      for (let i = 0; i < 20; i++) {
+        const on = i < sellos;
+        sellosHTML += `<div class="sello ${on ? 'activo' : 'pendiente'}">${on ? '★' : (i + 1)}</div>`;
+      }
+      const cta = m.canje_disponible
+        ? `<button onclick="pedirCanje()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold py-3 rounded-xl mt-3 text-lg shadow-md">
+             🎁 Canjear ₡15.000 ahora
+           </button>`
+        : `<div class="text-center text-sm text-gray-600 mt-3">
+             Te faltan <span class="font-bold text-emerald-600">${restantes} sellos</span> para ganar tu canje de ₡15.000
+           </div>`;
+
+      const txHTML = (miembro.transacciones || []).map(t => `
+        <div class="flex items-center justify-between py-2 border-b border-gray-100 text-sm">
+          <div>
+            <div class="font-medium text-gray-800">${t.negocio.replace(/_/g, ' ')}</div>
+            <div class="text-xs text-gray-500">${t.fecha || 'Sin fecha'}</div>
+          </div>
+          <div class="text-right">
+            <div class="font-semibold text-gray-700">₡${(t.monto || 0).toLocaleString('es-CR')}</div>
+            <div class="text-xs text-emerald-600">+${t.sellos || 0} sellos</div>
+          </div>
+        </div>
+      `).join('') || '<div class="text-center text-gray-400 py-4 text-sm">Aún no hay compras registradas</div>';
+
+      const canjesHTML = (miembro.canjes || []).filter(c => c.estado !== 'expirado').map(c => `
+        <div class="flex items-center justify-between py-2 border-b border-gray-100 text-sm">
+          <div>
+            <div class="font-medium text-gray-800">Código ${c.codigo}</div>
+            <div class="text-xs text-gray-500">${c.estado === 'pendiente' ? `Válido hasta ${c.fecha_expira}` : `Usado ${c.fecha_uso || ''}`}</div>
+          </div>
+          <div class="text-right">
+            <div class="font-semibold ${c.estado === 'usado' ? 'text-gray-400' : 'text-emerald-600'}">₡${(c.valor || 0).toLocaleString('es-CR')}</div>
+            <div class="text-xs ${c.estado === 'pendiente' ? 'text-yellow-600 font-semibold' : 'text-gray-400'}">${c.estado}</div>
+          </div>
+        </div>
+      `).join('') || '<div class="text-center text-gray-400 py-4 text-sm">Aún no hay canjes</div>';
+
+      app.innerHTML = `
+        <div class="bg-white rounded-2xl shadow-md p-5 mt-4">
+          <div class="text-xs text-gray-500 mb-1">Hola,</div>
+          <div class="text-2xl font-bold text-gray-800">${m.nombre || 'amigo'} 👋</div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md p-5 mt-4 text-center">
+          <div class="text-xs uppercase tracking-widest text-gray-500 mb-2">Tus sellos</div>
+          <div class="text-6xl font-extrabold text-emerald-600 mb-1">${m.sellos_actuales}</div>
+          <div class="text-sm text-gray-500 mb-5">de 20 para canje</div>
+
+          <div class="flex flex-wrap justify-center max-w-xs mx-auto">
+            ${sellosHTML}
+          </div>
+
+          ${cta}
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md p-5 mt-4">
+          <h3 class="font-bold text-gray-700 mb-3">Últimas compras</h3>
+          ${txHTML}
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md p-5 mt-4 mb-8">
+          <h3 class="font-bold text-gray-700 mb-3">Mis canjes</h3>
+          ${canjesHTML}
+        </div>
+      `;
+    }
+
+    async function pedirCanje() {
+      if (!confirm("¿Canjear 20 sellos por ₡15.000 de crédito?")) return;
+      try {
+        const r = await api('/api/pedir-canje', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ telefono: miembro.miembro.telefono })
+        });
+        alert(`¡Listo! Tu código es ${r.codigo_canje}. También te lo enviamos por WhatsApp.`);
+        location.reload();
+      } catch (e) {
+        alert("Error: " + e.message);
+      }
+    }
+
+    function renderError(msg) {
+      app.innerHTML = `
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-6 mt-4">
+          <div class="text-red-800 font-semibold">Error</div>
+          <div class="text-red-600 text-sm mt-1">${msg}</div>
+          <button onclick="location.href='/'" class="mt-4 text-sm text-emerald-600 underline">Volver al inicio</button>
+        </div>
+      `;
+    }
+
+    init();
+  </script>
+</body>
+</html>
